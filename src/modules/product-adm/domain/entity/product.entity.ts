@@ -8,8 +8,8 @@ type ProductProps = {
   description: string;
   purchasePrice: number;
   stock: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 // 1. Extendemos de BaseEntity pois devemos jogar para a classe todos os métodos em comum que
