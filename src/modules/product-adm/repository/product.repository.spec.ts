@@ -88,5 +88,32 @@ describe('ProductRepository test', () => {
     await expect(
       async () => await productRepository
         .find(id)).rejects.toThrow(`product.id.${id}.not.found`)
-  })
+  });
+
+  test('should retrieve a stock by product id', async () => {
+    const productRepository = new ProductRepository();
+
+    const product = new Product({
+      id: new Id("1"),
+      description: 'description',
+      name: 'name',
+      purchasePrice: 100,
+      stock: 120,
+    });
+
+    // Create a product
+    await ProductModel.create({
+      id: product.id.id,
+      description: product.description,
+      name: product.name,
+      purchasePrice: product.purchasePrice,
+      stock: product.stock,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+
+    // Find a product
+    const stock = await productRepository.getStock(product.id.id);
+    expect(stock).toEqual(product.stock)
+  });
 })
