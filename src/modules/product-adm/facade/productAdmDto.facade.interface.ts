@@ -12,7 +12,7 @@ export interface CheckStockFacadeInputDto {
 
 export interface CheckStockFacadeOutputDto {
   productId: string;
-  stock: number;
+  stockNumber: number;
 }
 
 export interface GetProductFacadeInputDto { }

@@ -1,6 +1,11 @@
-import { getPreparedAssociationOptions } from "sequelize-typescript";
 import UsecaseInterface from "../../@shared/usecase/usecase.interface";
-import { AddProductFacadeInputDto, CheckStockFacadeInputDto, CheckStockFacadeOutputDto, GetProductFacadeInputDto, GetProductFacadeOutputDto } from "./productAdmDto.facade.interface";
+import {
+  AddProductFacadeInputDto,
+  CheckStockFacadeInputDto,
+  CheckStockFacadeOutputDto,
+  GetProductFacadeInputDto,
+  GetProductFacadeOutputDto
+} from "./productAdmDto.facade.interface";
 import ProductAdmFacadeInterface from "./productAdmFacade.interface";
 
 export interface UsecaseProps {
@@ -23,7 +28,10 @@ export default class ProductAdmFacade implements ProductAdmFacadeInterface {
 
   async getStock(input: CheckStockFacadeInputDto): Promise<CheckStockFacadeOutputDto> {
     const result = await this._checkStockUsecase.execute(input);
-    return result;
+    return {
+      productId: result.productId,
+      stockNumber: result.stockNumber
+    };
   }
 
   async getProduct(input: GetProductFacadeInputDto): Promise<GetProductFacadeOutputDto> {
