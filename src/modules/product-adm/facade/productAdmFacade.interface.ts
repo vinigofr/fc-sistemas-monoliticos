@@ -1,10 +1,13 @@
 import {
   AddProductFacadeInputDto,
   CheckStockFacadeInputDto,
-  CheckStockFacadeOutputDto
+  CheckStockFacadeOutputDto,
+  GetProductFacadeInputDto,
+  GetProductFacadeOutputDto
 } from "./productAdmDto.facade.interface"
 
 export default interface ProductAdmFacadeInterface {
   addProduct(input: AddProductFacadeInputDto): Promise<void>
-  checkStock(input: CheckStockFacadeInputDto): Promise<CheckStockFacadeOutputDto>
+  getStock(input: CheckStockFacadeInputDto): Promise<CheckStockFacadeOutputDto>
+  getProduct(input: GetProductFacadeInputDto): Promise<GetProductFacadeOutputDto>
 }
