@@ -2,7 +2,7 @@ import { AddProductInputDto } from "./addProduct.dto";
 import AddProductUsecase from "./addProduct.usecase";
 
 const MockRepository = () => ({
-  add: jest.fn(), find: jest.fn()
+  add: jest.fn(), find: jest.fn(), getStock: jest.fn()
 })
 
 describe('addProduct usecase unit test', () => {
