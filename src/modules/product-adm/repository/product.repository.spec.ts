@@ -3,24 +3,18 @@ import ProductModel from "./product.model";
 import ProductRepository from "./product.repository";
 import Product from "../domain/entity/product.entity";
 import Id from "../../@shared/domain/value-object/idValueObject";
+import SequelizeDatabaseManager from "../../@shared/utils/sequelizeDatabaseManager";
 
 describe('ProductRepository test', () => {
-  let sequelize: Sequelize;
+  let sequelize: SequelizeDatabaseManager;
 
   beforeEach(async () => {
-    sequelize = new Sequelize({
-      dialect: 'sqlite',
-      storage: ':memory:',
-      logging: false,
-      sync: { force: true }
-    });
-
-    await sequelize.addModels([ProductModel]);
-    await sequelize.sync();
+    sequelize = new SequelizeDatabaseManager([ProductModel])
+    await sequelize.sequelizeSync();
   });
 
   afterEach(async () => {
-    await sequelize.close();
+    await sequelize.sequelizeClose();
   })
 
   test('should create a product', async () => {
