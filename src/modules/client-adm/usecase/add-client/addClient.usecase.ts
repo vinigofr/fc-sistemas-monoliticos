@@ -1,3 +1,4 @@
+import Id from "../../../@shared/domain/value-object/idValueObject";
 import UsecaseInterface from "../../../@shared/usecase/usecase.interface";
 import Client from "../../domain/client.entity";
 import ClientGatway from "../../gateway/client.gateway";
@@ -12,6 +13,7 @@ export default class AddClientUsecase implements UsecaseInterface {
 
   async execute(input: AddClientInputDto): Promise<AddClientOutputDto> {
     const client = new Client({
+      id: new Id(input.id),
       address: input.address,
       email: input.email,
       name: input.name
