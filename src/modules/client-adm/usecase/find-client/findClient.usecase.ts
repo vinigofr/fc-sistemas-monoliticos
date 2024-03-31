@@ -16,7 +16,6 @@ export default class FindClientUsecase implements UsecaseInterface {
       throw new Error(`client.with.id.${result.id.id}.not.found`)
     }
 
-
     const {
       address,
       createdAt,
