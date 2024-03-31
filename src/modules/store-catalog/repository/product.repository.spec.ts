@@ -32,7 +32,6 @@ describe('ProductRepository test', () => {
     const productRepository = new ProductRepository();
 
     const result = await productRepository.findAll();
-    console.log({ result })
 
     expect(result.length).toBe(2);
     expect(result[0].id.id).toBe("1");
