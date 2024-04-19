@@ -101,4 +101,9 @@ describe('InvoiceRepository test', () => {
     expect(result.invoiceItems[0].name).toBe(invoiceItems[0].dataValues.name);
     expect(result.invoiceItems[0].price).toBe(invoiceItems[0].dataValues.price);
   });
+
+  test('should\'not find invoice if does not exist', async () => {
+    const repository = new InvoiceRepository();
+    await expect(async () => await repository.find('1')).rejects.toThrow('invoice.with.id.1.not.found');
+  });
 });
