@@ -50,7 +50,7 @@ describe('InvoiceRepository test', () => {
           price: 20,
         })
       ],
-    })
+    });
 
     const result = await repository.generate(input);
 
@@ -66,5 +66,39 @@ describe('InvoiceRepository test', () => {
     expect(result.invoiceItems[1].id.id).toBe(input.invoiceItems[1].id.id);
     expect(result.invoiceItems[1].name).toBe(input.invoiceItems[1].name);
     expect(result.invoiceItems[1].price).toBe(input.invoiceItems[1].price);
+  });
+
+  test('should find invoice by id', async () => {
+    const repository = new InvoiceRepository();
+    const date = new Date();
+
+    const { dataValues: createdData } = await InvoiceModel.create({
+      id: '123',
+      name: 'name',
+      document: 'document',
+      invoiceItems: [{
+        id: '1',
+        name: 'item 1',
+        price: 1,
+      }],
+      createdAt: date,
+      updatedAt: date,
+    }, {
+      include: [{ association: InvoiceModel.associations.invoiceItems }],
+    }
+    );
+
+    const { invoiceItems } = createdData;
+
+    const result = await repository.find('123');
+
+    expect(result).not.toBeUndefined();
+    expect(result.id.id).toBe(createdData.id);
+    expect(result.name).toBe(createdData.name);
+    expect(result.document).toBe(createdData.document);
+    expect(result.invoiceItems.length).toBe(1);
+    expect(result.invoiceItems[0].id.id).toBe(invoiceItems[0].dataValues.id);
+    expect(result.invoiceItems[0].name).toBe(invoiceItems[0].dataValues.name);
+    expect(result.invoiceItems[0].price).toBe(invoiceItems[0].dataValues.price);
   });
 });
