@@ -22,7 +22,7 @@ export default class InvoiceItemModel extends Model {
   name: string;
 
   @Column({ allowNull: false })
-  price: string;
+  price: number;
 
   @ForeignKey(() => InvoiceModel)
   @Column({ allowNull: false })
