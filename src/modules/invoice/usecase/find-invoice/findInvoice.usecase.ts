@@ -30,7 +30,7 @@ export default class FindInvoiceUsecase implements UsecaseInterface {
       items: result.invoiceItems.map(({ id: { id }, name, price }) => ({ id, name, price })),
       id: result.id.id,
       name: result.name,
-      total: 0 // TODO: Implement total
+      total: result.total,
     };
 
     return invoice;

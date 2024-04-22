@@ -51,7 +51,7 @@ describe('Find Invoice usecase unit tests', () => {
     expect(result.items[0].name).toBe(invoice.invoiceItems[0].name);
     expect(result.name).toBe(invoice.name);
     expect(result.createdAt).toEqual(invoice.createdAt);
-    expect(result.total).toBe(0);
+    expect(result.total).toBe(10);
   })
 
   test('should test find method output when an error is thrown', async () => {
