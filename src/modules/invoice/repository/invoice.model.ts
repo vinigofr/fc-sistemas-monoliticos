@@ -31,5 +31,6 @@ export default class InvoiceModel extends Model {
   @HasMany(() => InvoiceItemModel)
   invoiceItems: ReturnType<() => InvoiceItemModel[]>;
 
-  // TODO: Add address association
+  @Column({ allowNull: true })
+  addressId: string;
 }

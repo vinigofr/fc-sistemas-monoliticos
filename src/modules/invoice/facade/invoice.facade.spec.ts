@@ -1,3 +1,4 @@
+import AddressModel from "../../@shared/models/address.model";
 import SequelizeDatabaseManager from "../../@shared/utils/sequelizeDatabaseManager";
 import InvoiceFacadeFactory from "../factory/invoice.factory";
 import InvoiceModel from "../repository/invoice.model";
@@ -7,7 +8,11 @@ describe('Invoice facade unit tests', () => {
   let sequelize: SequelizeDatabaseManager;
 
   beforeEach(async () => {
-    sequelize = new SequelizeDatabaseManager([InvoiceModel, InvoiceItemModel]);
+    sequelize = new SequelizeDatabaseManager([
+      InvoiceModel,
+      InvoiceItemModel,
+      AddressModel
+    ]);
     await sequelize.sequelizeSync();
   });
 
@@ -74,7 +79,55 @@ describe('Invoice facade unit tests', () => {
     expect(result.id).toBe('123');
     expect(result.name).toBe('name');
     expect(result.document).toBe('document');
-    expect(result.address).toBeDefined();
+    expect(result.address).toBeNull();
     expect(result.items).toHaveLength(1);
   });
-})
+
+  test('should find an invoice by id with address data', async () => {
+    await AddressModel.create({
+      id: 'addressId',
+      street: 'street',
+      city: 'city',
+      zipCode: 'zipCode',
+      number: 'number',
+      complement: 'complement',
+      state: 'state',
+    }, {
+      raw: true
+    });
+
+    await InvoiceModel.create({
+      id: '123',
+      name: 'name',
+      document: 'document',
+      invoiceItems: [{
+        id: '1',
+        name: 'item 1',
+        price: 100,
+      }],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      addressId: 'addressId',
+    }, {
+      include: [{ association: InvoiceModel.associations.invoiceItems }],
+    }
+    );
+
+    const clientFacade = InvoiceFacadeFactory.create();
+
+    const result = await clientFacade.find({ id: '123' });
+
+    expect(result).not.toBeNull();
+    expect(result.id).toBe('123');
+    expect(result.name).toBe('name');
+    expect(result.document).toBe('document');
+    expect(result.items).toHaveLength(1);
+    expect(result.address).not.toBeNull();
+    expect(result.address.city).toBe('city');
+    expect(result.address.complement).toBe('complement');
+    expect(result.address.number).toBe('number');
+    expect(result.address.state).toBe('state');
+    expect(result.address.street).toBe('street');
+    expect(result.address.zipCode).toBe('zipCode');
+  });
+});

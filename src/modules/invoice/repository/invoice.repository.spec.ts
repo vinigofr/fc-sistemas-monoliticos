@@ -1,5 +1,6 @@
 import Address from "../../@shared/domain/value-object/addressValueObject";
 import Id from "../../@shared/domain/value-object/idValueObject";
+import AddressModel from "../../@shared/models/address.model";
 import SequelizeDatabaseManager from "../../@shared/utils/sequelizeDatabaseManager";
 import Invoice from "../domain/invoice.entity";
 import InvoiceItem from "../domain/invoiceItem.entity";
@@ -14,6 +15,7 @@ describe('InvoiceRepository test', () => {
     sequelize = new SequelizeDatabaseManager([
       InvoiceModel,
       InvoiceItemModel,
+      AddressModel,
     ]);
 
     await sequelize.sequelizeSync();
@@ -58,7 +60,12 @@ describe('InvoiceRepository test', () => {
     expect(result.id.id).toBe(input.id.id);
     expect(result.document).toBe(input.document);
     expect(result.name).toBe(input.name);
-    expect(result.address).toBeDefined();
+    expect(result.address.city).toBe(input.address.city);
+    expect(result.address.complement).toBe(input.address.complement);
+    expect(result.address.number).toBe(input.address.number);
+    expect(result.address.state).toBe(input.address.state);
+    expect(result.address.street).toBe(input.address.street);
+    expect(result.address.zipCode).toBe(input.address.zipCode);
     expect(result.invoiceItems.length).toBe(2);
     expect(result.invoiceItems[0].id.id).toBe(input.invoiceItems[0].id.id);
     expect(result.invoiceItems[0].name).toBe(input.invoiceItems[0].name);
@@ -72,6 +79,16 @@ describe('InvoiceRepository test', () => {
     const repository = new InvoiceRepository();
     const date = new Date();
 
+    const { dataValues: createdAddressData } = await AddressModel.create({
+      id: 'addressId',
+      street: 'street',
+      city: 'city',
+      zipCode: 'zipCode',
+      number: 'number',
+      complement: 'complement',
+      state: 'state',
+    }, { raw: true });
+
     const { dataValues: createdData } = await InvoiceModel.create({
       id: '123',
       name: 'name',
@@ -83,6 +100,7 @@ describe('InvoiceRepository test', () => {
       }],
       createdAt: date,
       updatedAt: date,
+      addressId: createdAddressData.id,
     }, {
       include: [{ association: InvoiceModel.associations.invoiceItems }],
     }
@@ -100,6 +118,12 @@ describe('InvoiceRepository test', () => {
     expect(result.invoiceItems[0].id.id).toBe(invoiceItems[0].dataValues.id);
     expect(result.invoiceItems[0].name).toBe(invoiceItems[0].dataValues.name);
     expect(result.invoiceItems[0].price).toBe(invoiceItems[0].dataValues.price);
+    expect(result.address.city).toBe('city');
+    expect(result.address.complement).toBe('complement');
+    expect(result.address.number).toBe('number');
+    expect(result.address.state).toBe('state');
+    expect(result.address.street).toBe('street');
+    expect(result.address.zipCode).toBe('zipCode');
   });
 
   test('should\'not find invoice if does not exist', async () => {

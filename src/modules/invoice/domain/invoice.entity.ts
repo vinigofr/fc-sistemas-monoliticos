@@ -8,7 +8,7 @@ interface InvoiceProps {
   id?: Id;
   name: string;
   document: string;
-  address: Address;
+  address: Address | null;
   invoiceItems: InvoiceItem[];
   createdAt?: Date;
   updatedAt?: Date;

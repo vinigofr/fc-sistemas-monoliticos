@@ -13,7 +13,7 @@ export interface FindInvoiceUsecaseOutputDto {
     city: string;
     state: string;
     zipCode: string;
-  };
+  } | null;
   items: {
     id: string;
     name: string;

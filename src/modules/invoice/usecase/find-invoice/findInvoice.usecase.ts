@@ -17,14 +17,14 @@ export default class FindInvoiceUsecase implements UsecaseInterface {
     }
 
     const invoice: FindInvoiceUsecaseOutputDto = {
-      address: {
+      address: result.address ? {
         city: result.address.city,
         number: result.address.number,
         complement: result.address.complement,
         state: result.address.state,
         street: result.address.street,
         zipCode: result.address.zipCode,
-      },
+      } : null,
       createdAt: result.createdAt,
       document: result.document,
       items: result.invoiceItems.map(({ id: { id }, name, price }) => ({ id, name, price })),

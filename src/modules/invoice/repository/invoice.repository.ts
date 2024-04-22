@@ -5,9 +5,20 @@ import InvoiceItemModel from "./invoiceItem.model";
 import Invoice from "../domain/invoice.entity";
 import InvoiceModel from "./invoice.model";
 import Address from "../../@shared/domain/value-object/addressValueObject";
+import AddressModel from "../../@shared/models/address.model";
 
 export default class InvoiceRepository implements InvoiceGateway {
   async generate(input: Invoice): Promise<Invoice> {
+    const createdAddressData = await AddressModel.create({
+      id: new Id().id,
+      street: input.address.street,
+      city: input.address.city,
+      zipCode: input.address.zipCode,
+      number: input.address.number,
+      complement: input.address.complement,
+      state: input.address.state,
+    }, { raw: true });
+
     const createdData = await InvoiceModel.create({
       id: input.id.id || new Id().id,
       name: input.name,
@@ -21,6 +32,7 @@ export default class InvoiceRepository implements InvoiceGateway {
       }),
       createdAt: input.createdAt,
       updatedAt: input.updatedAt,
+      addressId: createdAddressData.dataValues.id,
     }, {
       include: [{
         association: InvoiceModel.associations.invoiceItems,
@@ -38,8 +50,14 @@ export default class InvoiceRepository implements InvoiceGateway {
       document: createdInvoice.document,
       createdAt: createdInvoice.createdAt,
       updatedAt: createdInvoice.updatedAt,
-      // TODO: Address DB implementation
-      address: input.address,
+      address: new Address({
+        street: createdAddressData.dataValues.street,
+        city: createdAddressData.dataValues.city,
+        zipCode: createdAddressData.dataValues.zipCode,
+        number: createdAddressData.dataValues.number,
+        complement: createdAddressData.dataValues.complement,
+        state: createdAddressData.dataValues.state,
+      }),
       invoiceItems: invoiceItems.map((invoiceItem) => {
         const invoiceItemData = invoiceItem.dataValues;
 
@@ -64,6 +82,8 @@ export default class InvoiceRepository implements InvoiceGateway {
       throw new Error(`invoice.with.id.${id}.not.found`);
     }
 
+    const addressResult = await AddressModel.findOne({ where: { id: result.dataValues.addressId } });
+
     const foundInvoice: InvoiceModel = result.dataValues;
     const invoiceItems: InvoiceItemModel[] = foundInvoice.invoiceItems;
 
@@ -73,8 +93,14 @@ export default class InvoiceRepository implements InvoiceGateway {
       document: foundInvoice.document,
       createdAt: foundInvoice.createdAt,
       updatedAt: foundInvoice.updatedAt,
-      // TODO: Address implementation
-      address: new Address({ city: '', complement: '', number: '', state: '', street: '', zipCode: '' }),
+      address: addressResult ? new Address({
+        city: addressResult.dataValues.city,
+        complement: addressResult.dataValues.complement,
+        number: addressResult.dataValues.number,
+        state: addressResult.dataValues.state,
+        street: addressResult.dataValues.street,
+        zipCode: addressResult.dataValues.zipCode
+      }) : null,
       invoiceItems: invoiceItems.map((invoiceItem) => {
         const invoiceItemData = invoiceItem.dataValues;
         return new InvoiceItem({
