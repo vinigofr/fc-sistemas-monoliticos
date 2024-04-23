@@ -2,7 +2,7 @@ import AgregateRoot from "../../@shared/domain/entity/agregateRoot.interface";
 import BaseEntity from "../../@shared/domain/entity/base.entity";
 import Id from "../../@shared/domain/value-object/idValueObject";
 
-interface ClientProps {
+type ClientProps = {
   id?: Id;
   name: string;
   email: string;
