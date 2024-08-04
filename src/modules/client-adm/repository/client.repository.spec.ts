@@ -23,7 +23,14 @@ describe('ProductRepository test', () => {
       id: new Id('1'),
       address: 'address 105',
       email: 'x@x.com',
-      name: 'client 1'
+      name: 'client 1',
+      city: 'Presidente Dutra',
+      complement: 'Complemento',
+      document: '12456789',
+      number: '12',
+      state: 'MA',
+      street: 'Rua',
+      zipCode: '123456-789',
     })
 
     const result = await repository.add(input);
