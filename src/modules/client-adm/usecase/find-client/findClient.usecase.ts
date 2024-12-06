@@ -22,7 +22,14 @@ export default class FindClientUsecase implements UsecaseInterface {
       email,
       id,
       updatedAt,
-      name
+      name,
+      city,
+      complement,
+      document,
+      number,
+      state,
+      street,
+      zipCode
     } = result
 
     return {
@@ -32,6 +39,13 @@ export default class FindClientUsecase implements UsecaseInterface {
       id: id.id,
       updatedAt,
       name,
+      city,
+      complement,
+      document,
+      number,
+      state,
+      street,
+      zipCode
     }
   }
 }

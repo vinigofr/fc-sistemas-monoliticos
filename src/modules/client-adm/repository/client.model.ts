@@ -23,4 +23,25 @@ export default class ClientModel extends Model {
 
   @Column({ allowNull: false })
   updatedAt: Date;
+
+  @Column({ allowNull: false })
+  document: string;
+
+  @Column({ allowNull: false })
+  street: string;
+
+  @Column({ allowNull: false })
+  number: string;
+
+  @Column({ allowNull: false })
+  complement: string;
+
+  @Column({ allowNull: false })
+  city: string;
+
+  @Column({ allowNull: false })
+  zipCode: string;
+
+  @Column({ allowNull: false })
+  state: string;
 }

@@ -17,7 +17,7 @@ export default class SequelizeDatabaseManager {
   }
 
   async sequelizeSync(): Promise<void> {
-    await this._sequelize.addModels(this._models);
+    this._sequelize.addModels(this._models);
     await this._sequelize.sync();
   }
 

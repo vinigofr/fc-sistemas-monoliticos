@@ -1,4 +1,5 @@
 import AddClientUsecase from "./addClient.usecase";
+import { AddClientInputDto } from "./addClient.usecase.dto";
 
 const mockRepository = () => ({
   add: jest.fn(),
@@ -10,10 +11,17 @@ describe('Add Client Usecase unit test', () => {
     const repository = mockRepository();
     const usecase = new AddClientUsecase(repository);
 
-    const input = {
+    const input: AddClientInputDto = {
       name: 'John Doe',
       email: 'x@x.com',
-      address: 'address 105'
+      address: 'address 105',
+      city: 'Presidente Dutra',
+      complement: 'Complemento',
+      document: '12345678',
+      number: '123',
+      state: 'MA',
+      street: 'Rua',
+      zipCode: '123456-789',
     }
 
     const result = await usecase.execute(input);

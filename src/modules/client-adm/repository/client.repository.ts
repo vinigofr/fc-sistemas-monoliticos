@@ -29,6 +29,13 @@ export default class ClientRepository implements ClientGatway {
       address: result.address,
       createdAt: result.createdAt,
       updatedAt: result.updatedAt,
+      city: result.city,
+      complement: result.complement,
+      document: result.document,
+      number: result.number,
+      state: result.state,
+      street: result.street,
+      zipCode: result.zipCode,
     })
   }
 }

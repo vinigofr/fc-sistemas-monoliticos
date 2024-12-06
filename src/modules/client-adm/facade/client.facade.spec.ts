@@ -1,6 +1,7 @@
 import SequelizeDatabaseManager from "../../@shared/utils/sequelizeDatabaseManager";
 import ClientFacadeFactory from "../factory/clientFacade.factory";
 import ClientModel from "../repository/client.model";
+import { AddClientFacadeInputDto } from "./clientDto.facade.interface";
 
 describe('Client facade unit tests', () => {
   let sequelize: SequelizeDatabaseManager;
@@ -22,6 +23,13 @@ describe('Client facade unit tests', () => {
       address: 'Rua 1',
       email: 'x@x.com',
       name: 'Client 1',
+      city: 'Presidente Dutra',
+      complement: 'Presidente Dutra',
+      document: '123456789',
+      number: '123',
+      state: 'MA',
+      street: 'Rua',
+      zipCode: '123456-789'
     }
 
     await clientFacade.add(input);
@@ -38,6 +46,14 @@ describe('Client facade unit tests', () => {
     expect(result.address).toBe(input.address);
     expect(result.email).toBe(input.email);
     expect(result.name).toBe(input.name);
+    expect(result.city).toBe(input.city);
+    expect(result.complement).toBe(input.complement);
+    expect(result.document).toBe(input.document);
+    expect(result.number).toBe(input.number);
+    expect(result.state).toBe(input.state);
+    expect(result.street).toBe(input.street);
+    expect(result.zipCode).toBe(input.zipCode);
+
   });
 
   test('should retrieve a client by id', async () => {

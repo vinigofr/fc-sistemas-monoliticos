@@ -16,7 +16,14 @@ export default class AddClientUsecase implements UsecaseInterface {
       id: new Id(input.id),
       address: input.address,
       email: input.email,
-      name: input.name
+      name: input.name,
+      city: input.city,
+      complement: input.complement,
+      document: input.complement,
+      number: input.number,
+      state: input.state,
+      street: input.state,
+      zipCode: input.zipCode,
     });
 
     await this._clientRepository.add(client);
@@ -26,6 +33,13 @@ export default class AddClientUsecase implements UsecaseInterface {
       address: client.address,
       email: client.email,
       name: client.name,
+      city: client.city,
+      complement: client.complement,
+      document: client.document,
+      number: client.number,
+      state: client.state,
+      street: client.street,
+      zipCode: client.zipCode,
       createdAt: client.createdAt,
       updatedAt: client.updatedAt,
     }
